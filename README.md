@@ -1,4 +1,4 @@
-# @composi/merge
+# @composi/merge-objects
 
 This function takes objects and returns a new object with all of their properties. The last object's properties will replace those of the earlier when these have the same name.
 
