@@ -4,7 +4,7 @@
  * @param {Object.<string, any>[]} objects
  * @return {Object.<string, any>} Object.<string, any>
  */
-export function merge(...objects) {
+export function mergeObjects(...objects) {
   // Clone both objects:
   const clones = objects.map(obj => JSON.parse(JSON.stringify(obj)))
   // Merge objects:

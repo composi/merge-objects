@@ -11,7 +11,7 @@ Passing in non-object values, such as string or numbers, will result in unpredic
 ## Install
 
 ```
-npm install --save-dev @composi/merge
+npm install --save-dev @composi/merge-objects
 ```
 
 ## Using
@@ -19,11 +19,11 @@ npm install --save-dev @composi/merge
 Merge two objects:
 
 ```javascript
-import { merge } from '@composi/merge'
+import { mergeObjects } from '@composi/merge-objects'
 
 const obj1 = {name: 'Mary'}
 const obj2 = {job: 'project manager'}
-const person = merge(obj1, obj2)
+const person = mergeObjects(obj1, obj2)
 // returns {name: 'Mary', job: 'project manager'}
 ```
 
@@ -32,9 +32,9 @@ const person = merge(obj1, obj2)
 You can clone an object with merge. Just pass in the object. The return object will be a clone:
 
 ```javascript
-import { merge } from '@composi/merge'
+import { mergeObjects } from '@composi/merge-objects'
 
 const obj1 = {name: 'Joe', job: 'mechanic'}
-const obj2 = merge(obj1)
+const obj2 = mergeObjects(obj1)
 obj1 === obj2 // returns false
 ```
