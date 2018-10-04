@@ -14,32 +14,31 @@ export function mergeObjects(...objects) {
 
   /**
    * Merge on object into another.
-   * @param {Object<string, any>} target 
+   * @param {Object<string, any>} target
    * @param {Object<string, any>} source
    */
   function createClone(target, source) {
-
     for (let key in source) {
-      let descriptor = Object.getOwnPropertyDescriptor(source, key);
+      let descriptor = Object.getOwnPropertyDescriptor(source, key)
       if (descriptor.value instanceof String) {
-        target[key] = new String(descriptor.value);
+        target[key] = new String(descriptor.value)
       } else if (descriptor.value instanceof Array) {
-        target[key] = createClone([], descriptor.value);
+        target[key] = createClone([], descriptor.value)
       } else if (descriptor.value instanceof Function) {
         target[key] = descriptor.value
       } else if (descriptor.value instanceof Object) {
-        let prototype = Reflect.getPrototypeOf(descriptor.value);
-        let clonedObject = createClone({}, descriptor.value);
-        Reflect.setPrototypeOf(clonedObject, prototype);
-        target[key] = clonedObject;
+        let prototype = Reflect.getPrototypeOf(descriptor.value)
+        let clonedObject = createClone({}, descriptor.value)
+        Reflect.setPrototypeOf(clonedObject, prototype)
+        target[key] = clonedObject
       } else {
-        Object.defineProperty(target, key, descriptor);
+        Object.defineProperty(target, key, descriptor)
       }
     }
 
-    let prototype = Reflect.getPrototypeOf(source);
-    Reflect.setPrototypeOf(target, prototype);
-    return target;
+    let prototype = Reflect.getPrototypeOf(source)
+    Reflect.setPrototypeOf(target, prototype)
+    return target
   }
   // Return cloned copy of merged objects:
   return objects.reduce((a, b) => createClone(a, b))
