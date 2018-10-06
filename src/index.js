@@ -19,7 +19,7 @@ export function mergeObjects(...objects) {
 
   function createClone(object, hash = new WeakMap()) {
     // Deal with primitive types:
-    if (Object(object) !== object) return object 
+    if (Object(object) !== object) return object
     // Deal with cyclic references:
     if (hash.has(object)) return hash.get(object)
     const result =
@@ -32,12 +32,16 @@ export function mergeObjects(...objects) {
             : Object.create(null)
     hash.set(object, result)
     if (object instanceof Map)
-      Array.from(object, ([key, val]) => result.set(key, createClone(val, hash)))
+      Array.from(object, ([key, val]) =>
+        result.set(key, createClone(val, hash))
+      )
     if (object instanceof Set)
       Array.from(object, val => result.add(createClone(val, hash)))
     return Object.assign(
       result,
-      ...Object.keys(object).map(key => ({ [key]: createClone(object[key], hash) }))
+      ...Object.keys(object).map(key => ({
+        [key]: createClone(object[key], hash)
+      }))
     )
   }
   // Return cloned copy of merged objects:
