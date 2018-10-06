@@ -77,6 +77,27 @@ test('should create a deep merge of objects', function() {
   expect(obj3.stats.jobs[1].status).toBe('current')
 })
 
+test('Should copy over clone of Map', function() {
+  const obj1 = {}
+})
+
+
+test('Should copy over clone of Set', function() {
+  let john = { name: 'John Doe' },
+    lily = { name: 'Lily Bush' },
+    peter = { name: 'Peter Drucker' };
+
+  var obj1 = {
+    name: 'Dingo',
+    map: new Map([
+      [john, 'admin'],
+      [lily, 'editor'],
+      [peter, 'subscriber']
+    ]),
+    // set: new Set([1, 2, 3])
+  }
+})
+
 test("merge should create a clone of object.", function () {
   const obj1 = {name: 'Joe'}
   const obj2 = mergeObjects(obj1)
@@ -98,3 +119,9 @@ test('provding only one object should create a clone of it', function() {
   obj1.name.last = 'Anderson'
   expect(obj2.name.last).toBe('Bodoni')
 })
+
+const el = {
+  header: document.querySelector('header')
+}
+const Refs = new WeakMap()
+Refs.set(el, el.header)
