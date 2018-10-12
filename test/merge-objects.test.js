@@ -119,9 +119,3 @@ test('provding only one object should create a clone of it', function() {
   obj1.name.last = 'Anderson'
   expect(obj2.name.last).toBe('Bodoni')
 })
-
-const el = {
-  header: document.querySelector('header')
-}
-const Refs = new WeakMap()
-Refs.set(el, el.header)
