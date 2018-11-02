@@ -8,8 +8,13 @@
  */
 
 export function mergeObjects(...objects) {
-  // Add empty object to arguments to ensure unique clone:
-  objects.unshift({})
+  const FIRST_ARGUMENT = 0
+  // Add empty array or object to arguments to ensure unique clone:
+  if (Array.isArray(objects[FIRST_ARGUMENT])) {
+    objects.unshift([])
+  } else {
+    objects.unshift({})
+  }
 
   /**
    * Create a clone of an object or array.
@@ -31,12 +36,14 @@ export function mergeObjects(...objects) {
             ? new object.constructor()
             : Object.create(null)
     hash.set(object, result)
-    if (object instanceof Map)
+    if (object instanceof Map) {
       Array.from(object, ([key, val]) =>
         result.set(key, createClone(val, hash))
       )
-    if (object instanceof Set)
+    }
+    if (object instanceof Set) {
       Array.from(object, val => result.add(createClone(val, hash)))
+    }
     return Object.assign(
       result,
       ...Object.keys(object).map(key => ({
@@ -45,5 +52,9 @@ export function mergeObjects(...objects) {
     )
   }
   // Return cloned copy of merged objects:
-  return objects.reduce((a, b) => Object.assign(a, createClone(b)))
+  if (Array.isArray(objects[FIRST_ARGUMENT])) {
+    return objects.reduce((a, b) => Array.prototype.concat(a, createClone(b)))
+  } else if (typeof objects[FIRST_ARGUMENT] === 'object') {
+    return objects.reduce((a, b) => Object.assign(a, createClone(b)))
+  }
 }

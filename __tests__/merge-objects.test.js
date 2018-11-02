@@ -81,7 +81,6 @@ test('Should copy over clone of Map', function() {
   const obj1 = {}
 })
 
-
 test('Should copy over clone of Set', function() {
   let john = { name: 'John Doe' },
     lily = { name: 'Lily Bush' },
@@ -118,4 +117,38 @@ test('provding only one object should create a clone of it', function() {
   expect(obj1 === obj2).toBe(false)
   obj1.name.last = 'Anderson'
   expect(obj2.name.last).toBe('Bodoni')
+})
+
+test('should be able to merge two arrays of simple values together', function() {
+  const arr1 = [1,2,3]
+  const arr2 = [4,5,6]
+  const arr3 = mergeObjects(arr1, arr2)
+  expect(arr3).toEqual([1,2,3,4,5,6])
+})
+
+test('should be able to merge two arrays of objects together', function() {
+  const arr1 = [{name: 'Joe'}, {name: 'Jane'}]
+  const arr2 = [{name: 'Mary'}, {name: 'Sam'}]
+  const arr3 = mergeObjects(arr1, arr2)
+  expect(arr3).toEqual([{ name: 'Joe' }, { name: 'Jane' }, { name: 'Mary' }, { name: 'Sam' }])
+})
+
+test('Merge array of objects should be clone not reference', function() {
+  const arr1 = [{ name: 'Joe' }, { name: 'Jane' }]
+  const arr2 = [{ name: 'Mary' }, { name: 'Sam' }]
+  const arr3 = mergeObjects(arr1, arr2)
+  arr1[0].name = 'Joseph'
+  arr2[1].name = 'Samuel'
+  expect(arr1[0].name).toEqual('Joseph')
+  expect(arr3[0].name).toEqual('Joe')
+  expect(arr2[1].name).toEqual('Samuel')
+  expect(arr3[3].name).toEqual('Sam')
+})
+
+test('If only a signle array is provided, it should be cloned', function() {
+  const arr1 = [{name: 'Sharon'}, {name: 'Bradley'}]
+  const arr2 = mergeObjects(arr1)
+  arr1[0].name = 'Shelley'
+  expect(arr1[0].name).toEqual('Shelley')
+  expect(arr2[0].name).toEqual('Sharon')
 })

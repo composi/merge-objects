@@ -10,7 +10,7 @@
     "constructor-super": 2,
     "curly": [
       "error",
-      "multi"
+      "multi-line"
     ],
     "eol-last": 2,
     "no-case-declarations": 2,
