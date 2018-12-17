@@ -31,10 +31,10 @@ export function mergeObjects(...objects) {
       object instanceof Date
         ? new Date(object)
         : object instanceof RegExp
-          ? new RegExp(object.source, object.flags)
-          : object.constructor
-            ? new object.constructor()
-            : Object.create(null)
+        ? new RegExp(object.source, object.flags)
+        : object.constructor
+        ? new object.constructor()
+        : Object.create(null)
     hash.set(object, result)
     if (object instanceof Map) {
       Array.from(object, ([key, val]) =>
