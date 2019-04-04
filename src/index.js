@@ -58,3 +58,5 @@ export function mergeObjects(...objects) {
     return objects.reduce((a, b) => Object.assign(a, createClone(b)))
   }
 }
+
+export const cloneObject = object => mergeObjects(object)
