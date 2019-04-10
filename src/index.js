@@ -60,3 +60,4 @@ export function mergeObjects(...objects) {
 }
 
 export const cloneObject = object => mergeObjects(object)
+export const clone = object => mergeObjects(object)
