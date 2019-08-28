@@ -1,4 +1,5 @@
-import { mergeObjects } from "../src"
+// @ts-nocheck
+import {mergeObjects} from "../src"
 
 test('merge should combine two objects and return a new one with those properties.', function() {
   const obj1 = { name: 'Mary' }
@@ -78,23 +79,76 @@ test('should create a deep merge of objects', function() {
 })
 
 test('Should copy over clone of Map', function() {
-  const obj1 = {}
+  let john = {name: 'John Doe'},
+    lily = {name: 'Lily Bush'},
+    peter = {name: 'Peter Drucker'},
+    sam = {name: 'Sam Adams'}
+
+  const map1 =  new Map([
+    [john, 'admin'],
+    [lily, 'editor'],
+    [peter, 'subscriber']
+  ])
+  const map2 = mergeObjects(map1)
+  expect(map1.size).toBe(3)
+  expect(map2.size).toBe(3)
+  map2.set(sam, 'worker')
+  expect(map2.has(sam)).toBe(true)
+  expect(map1.has(sam)).toBe(false)
+
+})
+
+test('should be able to merge two Maps', function() {
+  let john = {name: 'John Doe'},
+    lily = {name: 'Lily Bush'},
+    peter = {name: 'Peter Drucker'},
+    sam = {name: 'Sam Adams'},
+    mary = {name: 'Mary Smith'}
+
+  const map1 = new Map([
+    [john, 'admin'],
+    [lily, 'editor'],
+    [peter, 'subscriber']
+  ])
+  const map2 = new Map([
+    [peter, 'subscriber'],
+    [sam, 'worker'],
+    [mary, 'worker']
+  ])
+  const map3 = mergeObjects(map1, map2)
+
+  expect(map1.size).toBe(3)
+  expect(map2.size).toBe(3)
+  expect(map3.size).toBe(5)
+  expect(map3.has(john)).toBe(true)
+  expect(map3.has(lily)).toBe(true)
+  expect(map3.has(sam)).toBe(true)
+  expect(map3.has(mary)).toBe(true)
 })
 
 test('Should copy over clone of Set', function() {
-  let john = { name: 'John Doe' },
-    lily = { name: 'Lily Bush' },
-    peter = { name: 'Peter Drucker' };
+  const set1 = new Set([1, 2, 3])
+  const set2 = mergeObjects(set1)
+  expect(set1.size).toBe(3)
+  expect(set2.size).toBe(3)
+  expect(set1.has(3)).toBe(true)
+  expect(set2.has(3)).toBe(true)
+  set2.add(4)
+  expect(set2.size).toBe(4)
+  expect(set2.has(4)).toBe(true)
+  expect(set1.has(4)).toBe(false)
+  expect(set1.size).toBe(3)
+})
 
-  var obj1 = {
-    name: 'Dingo',
-    map: new Map([
-      [john, 'admin'],
-      [lily, 'editor'],
-      [peter, 'subscriber']
-    ]),
-    // set: new Set([1, 2, 3])
-  }
+test('Should be able to merge two Sets', function() {
+  const set1 = new Set([1, 2, 3])
+  const set2 = new Set([3, 4, 5])
+  const set3 = mergeObjects(set1, set2)
+  expect(set1.size).toBe(3)
+  expect(set2.size).toBe(3)
+  expect(set3.size).toBe(5)
+  expect(set3.has(4)).toBe(true)
+  expect(set3.has(5)).toBe(true)
 })
 
 test("merge should create a clone of object.", function () {

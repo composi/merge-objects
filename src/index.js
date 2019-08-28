@@ -12,6 +12,10 @@ export function mergeObjects(...objects) {
   // Add empty array or object to arguments to ensure unique clone:
   if (Array.isArray(objects[FIRST_ARGUMENT])) {
     objects.unshift([])
+  } else if (objects[FIRST_ARGUMENT] instanceof Set) {
+    objects.unshift(new Set())
+  } else if (objects[FIRST_ARGUMENT] instanceof Map) {
+    objects.unshift(new Map())
   } else {
     objects.unshift({})
   }
@@ -32,28 +36,37 @@ export function mergeObjects(...objects) {
         ? new Date(object)
         : object instanceof RegExp
         ? new RegExp(object.source, object.flags)
+        : object instanceof Set
+        ? new Set([...object])
+        : object instanceof Map
+        ? new Map([...object])
         : object.constructor
         ? new object.constructor()
         : Object.create(null)
     hash.set(object, result)
-    if (object instanceof Map) {
-      Array.from(object, ([key, val]) =>
-        result.set(key, createClone(val, hash))
+    if (object instanceof Set) {
+      return new Set([...object])
+    } else if (object instanceof Map) {
+      return new Map([...object])
+    } else {
+      return Object.assign(
+        result,
+        ...Object.keys(object).map(key => ({
+          [key]: createClone(object[key], hash)
+        }))
       )
     }
-    if (object instanceof Set) {
-      Array.from(object, val => result.add(createClone(val, hash)))
-    }
-    return Object.assign(
-      result,
-      ...Object.keys(object).map(key => ({
-        [key]: createClone(object[key], hash)
-      }))
-    )
+
   }
   // Return cloned copy of merged objects:
   if (Array.isArray(objects[FIRST_ARGUMENT])) {
     return objects.reduce((a, b) => Array.prototype.concat(a, createClone(b)))
+  } else if (objects[FIRST_ARGUMENT] instanceof Set) {
+    // @ts-ignore
+    return objects.reduce((a, b) => new Set([...a, ...createClone(b)]))
+  } else if (objects[FIRST_ARGUMENT] instanceof Map) {
+    // @ts-ignore
+    return objects.reduce((a, b) => new Map([...a, ...createClone(b)]))
   } else if (typeof objects[FIRST_ARGUMENT] === 'object') {
     return objects.reduce((a, b) => Object.assign(a, createClone(b)))
   }
