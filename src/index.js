@@ -56,7 +56,6 @@ export function mergeObjects(...objects) {
         }))
       )
     }
-
   }
   // Return cloned copy of merged objects:
   if (Array.isArray(objects[FIRST_ARGUMENT])) {
